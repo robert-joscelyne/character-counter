@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7fafc;
+            margin: 0;
+        }
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .fixed-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .counter {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .counter p {
+            margin: 0 30px;
+        }
+        .font-bold {
+            font-weight: bold;
+        }
+        .content {
+            margin-top: 100px; /* Adjust this value based on the header height */
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: calc(100vh - 140px); /* Adjust this value based on the header height and padding */
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            overflow: hidden;
+            resize: none;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-header">
+        <h1>Character Counter</h1>
+        <div class="counter">
+            <p>Characters (without spaces): <span id="charCount" class="font-bold"></span></p>
+            <p>Characters (including spaces): <span id="charCountSpaces" class="font-bold"></span></p>
+            <p>Characters (including newlines): <span id="charCountNewlines" class="font-bold"></span></p>
+        </div>
+    </div>
+    <div class="content">
+        <textarea id="textarea" oninput="updateCounts(); autoResize(this);">Enter content here</textarea>
+    </div>
+
+    <script>
+        function updateCounts() {
+            const text = document.getElementById('textarea').value;
+
+            // Count characters excluding spaces
+            const charCount = text.replace(/\s+/g, '').length;
+
+            // Count characters including spaces
+            const charCountSpaces = text.length;
+
+            // Count characters including newlines
+            const charCountNewlines = text.length + (text.split('\n').length - 1);
+
+            // Update the display
+            document.getElementById('charCount').innerText = charCount;
+            document.getElementById('charCountSpaces').innerText = charCountSpaces;
+            document.getElementById('charCountNewlines').innerText = charCountNewlines;
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // Initialize the counts and auto-resize
+        document.addEventListener('DOMContentLoaded', () => {
+            const textarea = document.getElementById('textarea');
+            updateCounts();
+            autoResize(textarea);
+            textarea.addEventListener('input', () => {
+                updateCounts();
+                autoResize(textarea);
+            });
+        });
+    </script>
+</body>
+</html>
